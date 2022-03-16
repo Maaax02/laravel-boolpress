@@ -9,9 +9,10 @@
     <link rel="stylesheet" href="{{asset('js/app.js')}}">
 </head>
 <body>
-    <div id="app">
-        aa
+    @extends('layouts.app')
+    {{-- <div id="app">
+    
     </div>
-    <script src="{{asset('js/vue.js')}}"></script>
+    <script src="{{asset('js/vue.js')}}"></script> --}}
 </body>
 </html>

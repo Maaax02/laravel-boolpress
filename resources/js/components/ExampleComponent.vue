@@ -7,6 +7,7 @@
 
                     <div class="card-body">
                         I'm an example component.
+                        <a href="admin/home">a</a>
                     </div>
                 </div>
             </div>
