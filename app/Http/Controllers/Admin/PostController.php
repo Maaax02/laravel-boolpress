@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Post;
+use Illuminate\Support\Facades\Auth;
+use App\Category;
+use App\Tag;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -25,7 +28,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        $tags = Tag::all();
+
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -35,8 +41,25 @@ class PostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {   
+
+        $data = $request->validate([
+            'title' => 'required|min:2',
+            'description' => 'required|min:8',
+            'user_id' => 'nullable',
+            'category_id' => 'nullable',
+            'tags' => 'nullable',
+        ]);
+
+        $post = new Post();
+        $post->fill($data);
+        $post->user_id=Auth::User()->id;
+        $post->save();
+        if (Key_exists('tags', $data)) {
+            $post->tags()->attach($data['tags']);
+        }
+
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
@@ -45,9 +68,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('admin.posts.show', compact('post'));
+        
     }
 
     /**
@@ -58,7 +82,14 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.posts.edit', [
+            'tags' => $tags,
+            'categories' => $categories,
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -70,7 +101,22 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $data = $request->validate([
+        //     'title' => 'required|min:2',
+        //     'description' => 'required|min:8',
+        //     'user_id' => 'nullable',
+        //     'category_id' => 'nullable',
+        //     'tags' => 'nullable|exists:tags,id',
+        // ]);
+        $data = $request->all();
+        $post = Post::findOrFail($id);
+        $post->update($data);
+        if(key_exists("tags", $data)) {
+            $post->tags()->sync($data['tags']);
+        } else {
+            $post->tags()->detach();
+        }
+        return redirect()->route('admin.posts.show', ['post'=>$post->id]);
     }
 
     /**
@@ -81,6 +127,9 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $post->delete();
+        
+        return redirect()->route('admin.posts.index');
     }
 }

@@ -20,14 +20,13 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')
 ->group(function(){
     Route::get('/', 'HomeController@index')->name('home');
-    Route::resource('posts', 'PostController');
-});
+    Route::resource("posts", "PostController");});
 
-// Route::get('{any?}', function(){
-//     return view('home');
-// })->where('any', '.*');
+Route::get('{any?}', function(){
+    return view('home');
+})->where('any', '.*');

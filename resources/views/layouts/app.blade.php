@@ -67,7 +67,9 @@
                                 </div>
                             </li>
                         @endguest
-                        <a href="{{asset('posts.index')}}">Posts</a>
+                        <a href="{{route('admin.posts.index')}}">Posts </a>
+                        <a href="{{route('admin.posts.create')}}">Create a New Post</a>
+                       
                     </ul>
                 </div>
             </div>
