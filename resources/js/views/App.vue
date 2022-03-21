@@ -1,13 +1,21 @@
 <template>
-  <div><ExampleComponentVue></ExampleComponentVue>
+  <div>
+    <the-nav></the-nav>
+    <router-view></router-view>
   </div>
+ 
 </template>  
 <script>
-import ExampleComponent from '../../../vendor/laravel/ui/src/Presets/vue-stubs/ExampleComponent.vue';
-import ExampleComponentVue from "../components/ExampleComponent.vue";
+import TheNav from '../components/TheNav.vue';
 export default 
 { components: 
-    { ExampleComponentVue, ExampleComponent } 
+    { TheNav }, 
+    data(){
+      return{
+        
+      }
+
+    },
 };
 </script>  
 

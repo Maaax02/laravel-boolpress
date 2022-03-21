@@ -28,10 +28,10 @@
                         class="fa-solid fa-eye"></i></a>
                     <a class="text-dark" href="{{ route('admin.posts.edit', $post->id) }}" title="Modifica"><i
                         class="fa-solid fa-edit"></i></a>
-                    {{-- @include('partials.deleteBtn', [
+                    @include('layouts.deleteBtn', [
                         'id' => $post->id,
                         'route' => 'admin.posts.destroy',
-                    ]) --}}
+                    ])
                   </div>
                 </li>
               @endforeach

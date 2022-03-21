@@ -20,7 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
+    <div>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{asset('home')}}">
@@ -67,8 +67,11 @@
                                 </div>
                             </li>
                         @endguest
-                        <a href="{{route('admin.posts.index')}}">Posts </a>
-                        <a href="{{route('admin.posts.create')}}">Create a New Post</a>
+                        <div class="ms-2">
+                            <a href="{{route('admin.posts.index')}}">Posts </a>
+                            <br>
+                            <a href="{{route('admin.posts.create')}}">Create a New Post</a>
+                        </div>
                        
                     </ul>
                 </div>

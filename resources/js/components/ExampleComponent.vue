@@ -6,8 +6,8 @@
                     <div class="card-header">Example Component</div>
 
                     <div class="card-body">
-                        I'm an example component.
-                        <a href="admin/home">a</a>
+                        I'm an example component.as
+                        <router-link class="" :to="{name: 'contacts.index'}">asd</router-link>
                     </div>
                 </div>
             </div>
@@ -19,6 +19,6 @@
     export default {
         mounted() {
             console.log('Component mounted.')
-        }
+        },
     }
 </script>
