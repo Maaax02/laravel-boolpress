@@ -31,7 +31,8 @@
         <!-- Right Side Of Navbar -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/login"> Admin </a>
+            <a class="nav-link" href="/login" v-if="!user"> Login</a>
+            <a class="nav-link" href="/admin" v-else> Area Riservata </a>
           </li>
         </ul>
       </div>
@@ -40,12 +41,26 @@
 </template>
 
 <script>
+import Axios from 'axios';
 import router from "../router";
 export default {
   data() {
     return {
       routes: [],
+      user: null
     };
+  },
+  methods: {
+    fetchUser(){
+      axios.get('/api/user').then(resp => {
+        this.user = resp.data;
+        localStorage.setItem('user', JSON.stringify(resp.data))
+      })
+      .catch((er) => {
+        console.log('not logged')
+        localStorage.removeItem('user');
+      })
+    }
   },
   mounted() {
     this.routes = this.$router.getRoutes().filter((route) => !!route.meta.linkText);

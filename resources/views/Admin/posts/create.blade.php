@@ -11,7 +11,7 @@
 
           <div class="card-body">
 
-            <form action="{{ route('admin.posts.store') }}" method="post">
+            <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
               @csrf
 
               {{-- titolo --}}
@@ -43,6 +43,15 @@
                       {{ $category->code }}</option>
                   @endforeach
                 </select>
+              </div>
+
+              <div class="mb-3">
+                <label>Immagine di copertina</label>
+                <input type="file" name="coverImg" class="form-control @error('coverImg') is-invalid @enderror"
+                  placeholder="Inserisci il titolo">
+                @error('coverImg')
+                  <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
               </div>
 
               <div class="mb-3">

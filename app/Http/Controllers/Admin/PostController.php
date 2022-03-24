@@ -7,6 +7,7 @@ use App\Category;
 use App\Tag;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -49,6 +50,7 @@ class PostController extends Controller
             'user_id' => 'nullable',
             'category_id' => 'nullable',
             'tags' => 'nullable',
+            'coverImg' => 'nullable|image|max:600'
         ]);
 
         $post = new Post();
@@ -58,7 +60,13 @@ class PostController extends Controller
         if (Key_exists('tags', $data)) {
             $post->tags()->attach($data['tags']);
         }
-
+        
+          // se la chiave esiste l'utente sta cercando di uploadare un file
+    if (key_exists("coverImg", $data)) {
+        $post->coverImg = Storage::put("postCovers", $data["coverImg"]);
+      }
+  
+      $post->save();
         return redirect()->route('admin.posts.show', $post->id);
     }
 
@@ -107,6 +115,7 @@ class PostController extends Controller
         //     'user_id' => 'nullable',
         //     'category_id' => 'nullable',
         //     'tags' => 'nullable|exists:tags,id',
+        //      "coverImg" => "nullable|image|max:500"
         // ]);
         $data = $request->all();
         $post = Post::findOrFail($id);
@@ -115,6 +124,18 @@ class PostController extends Controller
             $post->tags()->sync($data['tags']);
         } else {
             $post->tags()->detach();
+        }
+        $post->update($data);
+
+        if (key_exists("coverImg", $data)) {
+          if ($post->coverImg) {
+            Storage::delete($post->coverImg);
+          }
+    
+          $coverImg = Storage::put("postCovers", $data["coverImg"]);
+    
+          $post->coverImg = $coverImg;
+          $post->save();
         }
         return redirect()->route('admin.posts.show', ['post'=>$post->id]);
     }
@@ -129,6 +150,9 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post->tags()->detach();
+        if ($post->coverImg) {
+            Storage::delete($post->coverImg);
+        }
         $post->delete();
         return redirect()->route("admin.posts.index");
         

@@ -17,6 +17,11 @@ class PostController extends Controller
         //     'data' => $posts
         // ]);
         $posts->load('user', 'category');
+        $posts->each(function($post){
+            if($post->coverImg){
+                $post->coverImg = asset('storage/' . $post->coverImg);
+            }
+        });
         return response()->json($posts);
     }
 
@@ -27,14 +32,12 @@ class PostController extends Controller
             'user_id' => 'nullable',
             'category_id' => 'nullable',
             'tags' => 'nullable',
+            'coverImg' => 'nullable|image|max:700'
         ]);
         $newPost = new Post();
         $newPost->fill($data);
         $newPost->user_id = 6;
         $newPost->save();
-        // if(key_exist('tags')){
-
-        // }
         return response()->json($newPost);
     }
 
