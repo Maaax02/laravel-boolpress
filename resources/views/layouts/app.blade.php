@@ -6,6 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <button action="{{route('')}}"></button>
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -82,5 +83,6 @@
             @yield('content')
         </main>
     </div>
+    <script src="{{asset('js/vue_backoffice.js')}}"></script>
 </body>
 </html>
